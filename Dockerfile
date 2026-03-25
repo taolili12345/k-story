@@ -1,12 +1,12 @@
 # 使用更具体的镜像版本（基于 sha256）
-FROM --platform=linux/amd64 node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa AS builder
+FROM node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa AS builder
 
 # 设置工作目录
 WORKDIR /app
 
-# 只复制 package.json 并安装依赖（生产依赖）
+# 只复制 package.json 并安装依赖
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 
 # 复制项目文件
 COPY . .
@@ -18,7 +18,7 @@ RUN npm run build
 RUN npm prune --production
 
 # 生产环境镜像
-FROM --platform=linux/amd64 node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa
+FROM node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa
 
 # 安装 iconv-lite 依赖（处理 GBK 编码）
 RUN apk add --no-cache python3 g++ make
