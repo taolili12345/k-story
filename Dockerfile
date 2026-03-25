@@ -4,10 +4,9 @@ FROM node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7
 # 设置工作目录
 WORKDIR /app
 
-# 只复制 package.json 并安装依赖（利用 Docker 缓存）
+# 只复制 package.json 并安装依赖（生产依赖）
 COPY package*.json ./
-RUN npm ci --only=production && \
-    npm install --only=development
+RUN npm ci --omit=dev
 
 # 复制项目文件
 COPY . .
@@ -15,10 +14,9 @@ COPY . .
 # 构建 Next.js（生产构建）
 RUN npm run build
 
-# 清理构建缓存（减少镜像体积）
-RUN rm -rf node_modules && \
-    mv node_modules.production node_modules && \
-    npm ci --only=production
+# 清理开发依赖（减少镜像体积）
+RUN npm ci --omit=dev --only=production && \
+    npm prune --production
 
 # 生产环境镜像
 FROM node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa
