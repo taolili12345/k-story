@@ -10,3 +10,23 @@ docker-compose.yml
 .idea
 
 # 不添加 Dockerfile 到 .dockerignore，让它被克隆到云端
+
+# 优化镜像体积：排除以下文件
+.DS_Store
+*.md
+README.md
+CHANGELOG.md
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+src/app/**/*.test.ts*
+src/app/**/*.spec.ts*
+src/__tests__/*
+src/__mocks__/*
+next-env.d.ts
+tsconfig.tsbuildinfo
+.next
+out
+dist
