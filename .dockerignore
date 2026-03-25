@@ -3,11 +3,8 @@ node_modules
 .git
 .gitignore
 *.log
-Dockerfile
 docker-compose.yml
-.dockerignore
-README.md
-memory
+.memory
 .env
 .vscode
 .idea
