@@ -1,5 +1,5 @@
-# 使用官方 Node.js 20 Alpine 镜像（轻量）
-FROM node:20-alpine AS builder
+# 使用更具体的镜像版本（基于 sha256）
+FROM node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # 生产环境镜像
-FROM node:20-alpine
+FROM node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa
 
 # 安装 iconv-lite 依赖（处理 GBK 编码）
 RUN apk add --no-cache python3 g++ make

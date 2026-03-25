@@ -8,3 +8,5 @@ docker-compose.yml
 .env
 .vscode
 .idea
+
+# 不添加 Dockerfile 到 .dockerignore，让它被克隆到云端
