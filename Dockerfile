@@ -4,9 +4,9 @@ FROM node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7
 # 设置工作目录
 WORKDIR /app
 
-# 只复制 package.json 并安装依赖
+# 只复制 package.json 并安装所有依赖（构建需要 devDependencies）
 COPY package.json ./
-RUN npm install --production
+RUN npm install
 
 # 复制项目文件
 COPY . .
@@ -14,9 +14,8 @@ COPY . .
 # 构建 Next.js（生产构建）
 RUN npm run build
 
-# 清理 node_modules 中的无用文件（减少镜像体积）
-RUN rm -rf node_modules && \
-    npm install --production && \
+# 清理开发依赖（减少镜像体积）
+RUN npm prune --production && \
     npm cache clean --force
 
 # 生产环境镜像
